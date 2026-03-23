@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RoamBuddy | Smart Travel Planner</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showScreen('landing')">
+                <div class="logo-icon"><i data-lucide="plane"></i></div>
+                <span>RoamBuddy</span>
+            </div>
+            <div class="nav-links">
+                <button onclick="showScreen('landing')">Home</button>
+                <button onclick="startWizard()">Plan Trip</button>
+                <div id="auth-section">
+                    <button class="btn-primary" onclick="toggleModal('auth-modal')">Login</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Landing Screen -->
+    <section id="landing-screen" class="screen active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Meet your smart <span class="accent">RoamBuddy</span></h1>
+                <p>Tailored itineraries based on your budget, style, and duration. Plan your next adventure in seconds.</p>
+                <button class="btn-hero" onclick="startWizard()">
+                    Start Planning <i data-lucide="chevron-right"></i>
+                </button>
+            </div>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <i data-lucide="map-pin" class="icon-blue"></i>
+                <h3>Tourist Places</h3>
+                <p>Discover hidden gems and famous landmarks locally.</p>
+            </div>
+            <div class="service-card">
+                <i data-lucide="utensils" class="icon-orange"></i>
+                <h3>Restaurants</h3>
+                <p>Handpicked local flavors and top-rated cuisines.</p>
+            </div>
+            <div class="service-card">
+                <i data-lucide="hotel" class="icon-purple"></i>
+                <h3>Hotels</h3>
+                <p>From luxury resorts to cozy budget stays.</p>
+            </div>
+            <div class="service-card">
+                <i data-lucide="navigation" class="icon-green"></i>
+                <h3>Transit</h3>
+                <p>Real-time updates for rail, road, and air.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Wizard Screen -->
+    <section id="wizard-screen" class="screen">
+        <div class="wizard-container">
+            <div class="wizard-header">
+                <div class="progress-info">
+                    <span id="step-counter">Step 1 of 9</span>
+                    <span id="percent-label">10%</span>
+                </div>
+                <div class="progress-bar"><div id="progress-fill"></div></div>
+            </div>
+
+            <div id="wizard-steps">
+                <!-- Steps are injected via JS -->
+            </div>
+
+            <div class="wizard-footer">
+                <button id="prev-btn" class="btn-outline" onclick="prevStep()">Back</button>
+                <button id="next-btn" class="btn-primary" onclick="nextStep()">Continue <i data-lucide="arrow-right"></i></button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Dashboard Screen -->
+    <section id="dashboard-screen" class="screen">
+        <div class="dashboard-container">
+            <header class="dash-header">
+                <div>
+                    <h1 id="dash-dest-title">My Adventure</h1>
+                    <p id="dash-meta" class="text-muted"></p>
+                </div>
+                <div class="day-selector" id="day-tabs">
+                    <!-- Day tabs injected via JS -->
+                </div>
+            </header>
+
+            <div class="dash-grid">
+                <div class="itinerary-column">
+                    <div class="section-title">
+                        <h2>Schedule</h2>
+                        <button class="btn-delay" onclick="handleDelay()">
+                            <i data-lucide="clock"></i> Report Delay
+                        </button>
+                    </div>
+                    <div id="itinerary-list" class="itinerary-list">
+                        <!-- Items injected via JS -->
+                    </div>
+                </div>
+                <div class="summary-column">
+                    <div class="summary-card">
+                        <h3>Trip Summary</h3>
+                        <ul id="summary-details"></ul>
+                        <div class="next-up">
+                            <label>Next Stop</label>
+                            <p id="next-stop-text">Arrival</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Modals -->
+    <div id="auth-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="toggleModal('auth-modal')">&times;</button>
+            <div class="modal-header">
+                <i data-lucide="shield-check" class="icon-blue lg"></i>
+                <h2 id="auth-title">Welcome Back</h2>
+            </div>
+            <form onsubmit="handleAuth(event)">
+                <input type="text" id="auth-name" placeholder="Full Name" style="display: none;">
+                <input type="email" id="auth-email" placeholder="Email Address" required>
+                <input type="password" placeholder="Password" required>
+                <button type="submit" id="auth-submit-btn" class="btn-primary full">Login</button>
+            </form>
+            <p id="auth-footer-text" class="modal-footer-text" onclick="toggleAuthMode()" style="text-align: center; margin-top: 1.5rem; cursor: pointer; color: var(--text-muted); transition: color 0.2s;">
+                Don't have an account? <strong>Sign up</strong>
+            </p>
+        </div>
+    </div>
+
+    <!-- Help Trigger -->
+    <button class="help-trigger" onclick="toggleModal('help-modal')">
+        <i data-lucide="life-buoy"></i>
+    </button>
+
+    <div id="help-modal" class="modal">
+        <div class="modal-content">
+            <button class="close-btn" onclick="toggleModal('help-modal')">&times;</button>
+            <h2>Support Center</h2>
+            <div class="help-section">
+                <div class="contact-box">
+                    <p><strong>Developer:</strong> Cyril P Jose</p>
+                    <p><strong>Email:</strong> cyrilpjose2025@gmail.com</p>
+                </div>
+                <div class="faq">
+                    <h4>How it works</h4>
+                    <p>Tell us your destination and preferences. We generate a day-by-day plan. Use "Report Delay" if things run late!</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="main-footer">
+        <div class="footer-grid">
+            <div>
+                <h3>RoamBuddy</h3>
+                <p>Plan smart. Roam free.</p>
+            </div>
+            <div>
+                <h4>Contact</h4>
+                <p>Cyril P Jose</p>
+                <p>cyrilpjose2025@gmail.com</p>
+            </div>
+            <div class="copyright">
+                &copy; 2025 RoamBuddy. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>
